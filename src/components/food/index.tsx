@@ -101,7 +101,7 @@ const foods = [
   {
     title: '脆皮鸡腿',
     sales: 23,
-    price: 20.7,
+    price: 27,
     imgUrl: '11',
     pid: 'new',
     id: 'new#3',

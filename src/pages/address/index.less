@@ -10,6 +10,15 @@
       white-space: nowrap;
       text-overflow: ellipsis;
     }
+
+    & .nut-button--primary.nut-dialog__footer-ok {
+      background: skyblue;
+    }
+
+    & .nut-button--primary.nut-dialog__footer-cancel {
+      border-color: skyblue;
+      color: black;
+    }
   }
 
   &-float-adder {
@@ -34,6 +43,15 @@
   }
 
   &-listitem-line {
-    margin: 0.5rem 0;
+    margin: .5rem 0;
+  }
+
+  &-listitem-button {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 0 .5rem 0;
+    &-ref {
+      width: 45%;
+    }
   }
 }
