@@ -1,3 +1,5 @@
+import path from 'path';
+
 const config = {
   projectName: 'frontend',
   date: '2023-2-13',
@@ -9,7 +11,10 @@ const config = {
   },
   sourceRoot: 'src',
   outputRoot: 'dist',
-  plugins: [],
+  plugins: ['@tarojs/plugin-html'],
+  sass: {
+    data: `@import "@nutui/nutui-react-taro/dist/styles/variables.scss";`
+  },
   defineConstants: {
   },
   copy: {
@@ -22,6 +27,11 @@ const config = {
   compiler: 'webpack5',
   cache: {
     enable: true // Webpack 持久化缓存配置，建议开启。默认配置请参考：https://docs.taro.zone/docs/config-detail#cache
+  },
+  pxtransform: {
+    config: {
+      selectorBlackList: ['nut-']
+    }
   },
   mini: {
     postcss: {
@@ -63,7 +73,13 @@ const config = {
         }
       }
     }
-  }
+  },
+  alias: {
+    '@/components': path.resolve(__dirname, '..', 'src/components'),
+    '@/pages': path.resolve(__dirname, '..', 'src/pages'),
+    '@/common': path.resolve(__dirname, '..', 'src/common'),
+    '@/assets': path.resolve(__dirname, '..', 'src/assets'),
+  },
 }
 
 module.exports = function (merge) {

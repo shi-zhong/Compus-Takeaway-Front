@@ -2,12 +2,12 @@
   "miniprogramRoot": "./dist",
   "projectname": "frontend",
   "description": "简易校园外卖小程序/H5",
-  "appid": "touristappid",
+  "appid": "wx114720e3acec162d",
   "setting": {
     "urlCheck": true,
     "es6": false,
     "enhance": false,
-    "compileHotReLoad": false,
+    "compileHotReLoad": true,
     "postcss": false,
     "minified": false
   },

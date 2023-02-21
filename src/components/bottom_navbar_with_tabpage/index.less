@@ -1,0 +1,38 @@
+.bottom-navbar {
+  &-footer {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-end;
+    height: 98px;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0px -1px 6px rgba(0, 0, 0, 0.24);
+    position: fixed;
+    z-index: 10;
+    bottom: 0px;
+  }
+
+  &-tabpage-container {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: whitesmoke;
+  }
+
+  &-tab {
+    height: 90px;
+    &-title {
+      font-size: 15px;
+      font-family: PingFang SC;
+      font-weight: 400;
+      margin-top: -12px;
+      &-active {
+        color: #1296db;
+      }
+    }
+    &-icon {
+      width: 50px;
+      height: 50px;
+    }
+  }
+}
