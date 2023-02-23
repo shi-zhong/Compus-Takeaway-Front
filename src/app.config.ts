@@ -1,8 +1,9 @@
 export default defineAppConfig({
   pages: [
-    'pages/home/index',
-    'pages/address/index',
-    'pages/address/subpage/adder/index'
+    'pages/shop/index',
+    'pages/customer/home/index',
+    'pages/customer/address/index',
+    'pages/customer/address/subpage/adder/index'
   ],
   window: {
     backgroundTextStyle: 'light',

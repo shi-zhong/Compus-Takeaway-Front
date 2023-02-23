@@ -1,0 +1,35 @@
+.shop {
+  &- {
+    height: 100vh;
+    overflow: hidden;
+    background: whitesmoke;
+  }
+
+  &-scroll {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 100vh;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &-shop-card {
+    height: 6rem;
+    overflow: hidden;
+    margin: 1rem;
+    border-radius: 1rem;
+    padding: 1rem;
+    background: white;
+  }
+
+  &-commodity {
+    position: relative;
+    height: 100vh;
+    overflow: scroll;
+    overflow-x: hidden;
+    scroll-behavior: content;
+    padding-bottom: 4rem;
+    box-sizing: border-box;
+  }
+}
