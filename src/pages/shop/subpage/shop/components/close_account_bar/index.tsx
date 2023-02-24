@@ -5,6 +5,7 @@ import Box from '@/assets/icons/box.svg';
 import './index.less';
 
 interface CloseAccountBarProps {
+  handleClick: () => void;
   starting: number;
   delivery: number;
   items: number;
@@ -35,6 +36,7 @@ const Index = (props: CloseAccountBarProps) => {
 
       <Button
         className={Style(['button'])}
+        onClick={() => props.handleClick()}
         type='info'
         disabled={sum < starting}
       >

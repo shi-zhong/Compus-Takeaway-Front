@@ -8,7 +8,7 @@ import './index.less';
 interface ShopRightCommodityBarProps {
   commodity: { id: number; tag: string; price: number }[];
   select: { id: number; count: number; price: number }[];
-  handleSelectChange: (id: number, count: number, price: number) => void;
+  handleSelectChange: (id: number, count: number, all: any) => void;
 }
 
 interface CommodityBoxProps {
@@ -16,7 +16,7 @@ interface CommodityBoxProps {
   tag: string;
   price: number;
   select: { id: number; count: number; price: number } | undefined;
-  handleSelectChange: (id: number, count: number, price: number) => void;
+  handleSelectChange: (id: number, count: number, all: any) => void;
 }
 
 const CommodityBox = (props: CommodityBoxProps) => {
@@ -36,7 +36,7 @@ const CommodityBox = (props: CommodityBoxProps) => {
             modelValue={select?.count || undefined}
             min={0}
             onChangeFuc={(param: number) => {
-              handleSelectChange(id, param, price);
+              handleSelectChange(id, param, { id, tag, price });
             }}
           />
         </View>

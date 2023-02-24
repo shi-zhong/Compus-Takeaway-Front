@@ -1,0 +1,131 @@
+.customer-order-todo {
+  // rewrite css style
+  &- .nut-address .nut-address__exist .nut-address__exist-group {
+    padding: 0 2rem;
+  }
+
+  &-page {
+    width: 100%;
+    height: 100vh;
+    background-color: whitesmoke;
+    overflow: hidden;
+  }
+
+  &-scroll-view {
+    height: calc(100vh - 4rem);
+    overflow: scroll;
+    overflow-x: hidden;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &-address-card {
+    width: 90%;
+    height: 9rem;
+    margin: 1rem auto;
+    padding: 0.5rem;
+    box-sizing: border-box;
+    border-radius: 0.3rem;
+
+    font-size: 0.8rem;
+
+    background: white;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+
+    overflow: hidden;
+
+    & > :nth-child(1) {
+      height: 4rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    & > :nth-child(1),
+    & > :nth-child(2) {
+      border-bottom: 0.5px solid rgba(146, 146, 146, 0.3);
+    }
+
+    & > :nth-child(2),
+    & > :nth-child(3) {
+      height: 2rem;
+      line-height: 2rem;
+      color: gray;
+    }
+  }
+
+  &-change-address {
+    height: 1.75rem;
+    margin: 0.35rem;
+    float: right;
+  }
+
+  &-commodity-list {
+    width: 90%;
+    min-height: 10rem;
+    margin: 0 auto;
+    margin-bottom: 2rem;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+    border-radius: 0.3rem;
+
+    background: white;
+    & > :not(:last-child) {
+      border-bottom: 0.5px solid rgba(146, 146, 146, 0.3);
+    }
+  }
+
+  &-commodity {
+    height: 5rem;
+    padding: 0.5rem;
+    overflow: hidden;
+
+    display: flex;
+
+    &-avatar {
+      width: 5rem;
+    }
+    &-describe {
+      width: calc(100% - 5rem);
+
+      & > :nth-child(1) {
+        height: 3rem;
+      }
+      & > :nth-child(2),
+      & > :nth-child(3) {
+        height: 1rem;
+
+        font-size: 0.5rem;
+        text-align: right;
+        line-height: 1.5rem;
+        color: gray;
+      }
+      & > :nth-child(3) {
+        border: none;
+      }
+    }
+    &-line {
+      padding: 0 1rem 0 0;
+      border-bottom: 0.5px solid rgba(146, 146, 146, 0.3);
+    }
+  }
+
+  &-price {
+    color: rgb(56, 155, 198);
+  }
+
+  &-confirm {
+    position: fixed;
+    bottom: 0;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    height: 4rem;
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+
+    background-color: white;
+    box-shadow: 0 1px 2rem rgba(200, 200, 200, 0.5);
+  }
+}
