@@ -1,7 +1,8 @@
 export default defineAppConfig({
   pages: [
-    'pages/shop/index',
+    'pages/shopkeeper/index',
     'pages/customer/home/index',
+    'pages/shop/index',
     'pages/customer/address/index',
     'pages/customer/address/subpage/adder/index',
   ],

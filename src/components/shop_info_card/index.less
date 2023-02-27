@@ -1,0 +1,49 @@
+.shop-info-card {
+  &- {
+    height: 6rem;
+    overflow: hidden;
+    margin: 1rem;
+    border-radius: 1rem;
+    padding: 1rem;
+    background: white;
+  }
+
+  &-upper {
+    display: flex;
+    justify-content: space-between;
+
+    height: 4.5rem;
+    overflow: hidden;
+  }
+
+  &-text {
+    & :nth-child(2) {
+      font-size: 0.6rem;
+      color: gray;
+    }
+  }
+
+  &-star {
+    color: rgb(255, 123, 0);
+  }
+
+  &-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &-avatar {
+    height: 4rem;
+  }
+
+  &-introduce {
+    height: 1.5rem;
+
+    font-size: 0.7rem;
+    color: gray;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

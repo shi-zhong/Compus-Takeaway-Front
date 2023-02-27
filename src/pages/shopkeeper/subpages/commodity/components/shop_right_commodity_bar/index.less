@@ -1,0 +1,58 @@
+.shop-right-commodity-bar {
+
+  &-operation-bar {
+    height: 2rem;
+    border-bottom: 0.5px solid gray;
+  }
+
+  &-list {
+    width: 100vw;
+    padding-left: 4rem;
+    background-color: white;
+    min-height: calc(100vh - 2.45rem);
+    box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+  &-item {
+    width: 100%;
+    height: 5rem;
+    margin: 0;
+    overflow: hidden;
+    display: flex;
+  }
+
+  &-list > &-item:not(:last-child) {
+    border-bottom: 0.5px solid rgba(128, 128, 128, 0.491);
+  }
+
+  &-avatar {
+    width: 4.5rem;
+    border-radius: 0.5rem;
+    margin: 0.25rem;
+    vertical-align: middle;
+  }
+
+  &-right-counter {
+    display: inline-block;
+    height: 100%;
+    width: calc(100vw - 9rem);
+    padding: 0.5rem;
+  }
+
+  &-describe {
+    height: 3rem;
+    line-height: 1rem;
+    font-size: 0.9rem;
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &-counter {
+    height: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

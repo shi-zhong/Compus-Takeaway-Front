@@ -23,12 +23,12 @@ const Index = (props: CustomerSettingProps) => {
         />
       </View>
       <View className='customer-setting-list'>
-        <Cell
+        {/* <Cell
           title='地址管理'
           onClick={() => Taro.navigateTo({ url: 'pages/address/index' })}
-        />
+        /> */}
         {/* <Cell title='管理入口' /> */}
-        <Cell title='成为商家' onClick={() => setVisible(true)} />
+        <Cell title='用户入口' onClick={() => setVisible(true)} />
 
         <Dialog
           className='setting-confirm-tobe-shopkeeper'
