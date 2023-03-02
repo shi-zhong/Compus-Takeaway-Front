@@ -2,57 +2,76 @@ import { View } from '@tarojs/components';
 import { Picker, Button } from '@nutui/nutui-react-taro';
 import { ClassNameFactory } from '@/common/className';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import './index.less';
 
-interface SelectorProps {}
+interface SelectorProps {
+  syncSelector: (selected: { value: number | string; text: string }[]) => void;
+}
 
 interface PickerOption {
-  text: string | number;
+  text: string;
   value: string | number;
   disabled?: string;
   children?: PickerOption[];
   className?: string | number;
 }
 
+interface CustomPicker {
+  value: number | string;
+  text: string;
+  children: {
+    value: number | string;
+    text: string;
+  }[];
+}
+
 const prefix = 'customer-home-page-selector-';
 const CustomerHomePageSelectorStyle = ClassNameFactory(prefix);
 
 const Index = (props: SelectorProps) => {
+  useEffect(() => {
+    setCustmerData([
+      {
+        value: 1,
+        text: '学子餐厅',
+        children: [
+          { value: 1, text: '1F' },
+          { value: 2, text: '2F' },
+        ],
+      },
+      {
+        value: 2,
+        text: '东区',
+        children: [
+          { value: 1, text: '1F' },
+          { value: 2, text: '2F' },
+        ],
+      },
+    ]);
+  }, []);
+
   const [isVisible, setIsVisible] = useState(false);
-  const [custmerCityData, setCustmerCityData] = useState([
-    {
-      value: 1,
-      text: '学子餐厅',
-      children: [
-        { value: 1, text: '1F' },
-        { value: 2, text: '2F' },
-      ],
-    },
-    {
-      value: 2,
-      text: '东区',
-      children: [
-        { value: 1, text: '1F' },
-        { value: 2, text: '2F' },
-      ],
-    },
-  ]);
+  const [custmerData, setCustmerData] = useState([] as CustomPicker[]);
 
   const [options, setOptions] = useState(
     [] as { value: string | number; text: string | number }[],
   );
 
   const setChooseValueCustmer = (
-    values: (string | number)[],
+    _values: (string | number)[],
     chooseData: PickerOption[],
   ) => {
     setOptions(chooseData.map((i) => ({ value: i.value, text: i.text })));
+    props.syncSelector(
+      chooseData.map((i) => ({ value: i.value, text: i.text })),
+    );
   };
 
   const resetChosenValue = () => {
     setOptions([]);
+    props.syncSelector([]);
   };
 
   return (
@@ -76,7 +95,7 @@ const Index = (props: SelectorProps) => {
       </View>
       <Picker
         isVisible={isVisible}
-        listData={custmerCityData}
+        listData={custmerData}
         onClose={() => setIsVisible(false)}
         onConfirm={(values: (string | number)[], list: PickerOption[]) =>
           setChooseValueCustmer(values, list)

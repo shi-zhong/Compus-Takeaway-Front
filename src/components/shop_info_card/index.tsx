@@ -4,16 +4,17 @@ import { Image, View, Text } from '@tarojs/components';
 import './index.less';
 
 interface ShopInfoCardProps {
-  shop_id: number;
-  shop_name: string;
-  shop_avatar: string;
-  shop_address_id: number;
-  shop_address: string;
-  shop_introduce: string;
-  shop_statistic: {
+  id: number;
+  name: string;
+  avatar: string;
+  address_id: number;
+  address: string;
+  intro: string;
+  statistic: {
     star: number;
     monthly: number;
   };
+  onClick?:() => void;
 }
 
 /**
@@ -22,23 +23,23 @@ interface ShopInfoCardProps {
  * @returns
  */
 const Index = (props: ShopInfoCardProps) => {
-  const { shop_name, shop_statistic, shop_avatar, shop_introduce } = props;
+  const { name, statistic, avatar, intro } = props;
   const Style = ClassNameFactory('shop-info-card-');
 
   return (
-    <View className={Style([''])}>
+    <View className={Style([''])} onClick={props?.onClick || (()=>{})}>
       <View className={Style(['upper'])}>
         <View className={Style(['text'])}>
-          <View className={Style(['title'])}>{shop_name}</View>
+          <View className={Style(['title'])}>{name}</View>
           <View>
-            <Text className={Style(['star'])}>{shop_statistic.star}分</Text>{' '}
-            月售{shop_statistic.monthly}
+            <Text className={Style(['star'])}>{statistic.star}分</Text>{' '}
+            月售{statistic.monthly}
           </View>
         </View>
 
-        <Image className={Style(['avatar'])} src={shop_avatar} />
+        <Image className={Style(['avatar'])} src={avatar} />
       </View>
-      <View className={Style(['introduce'])}>{shop_introduce}</View>
+      <View className={Style(['introduce'])}>{intro}</View>
     </View>
   );
 };

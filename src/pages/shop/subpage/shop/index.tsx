@@ -2,6 +2,7 @@ import { View } from '@tarojs/components';
 import { useState } from 'react';
 import { Popup } from '@nutui/nutui-react-taro';
 import { ClassNameFactory } from '@/common/className';
+import ShopInfoCard from  '@/components/shop_info_card'
 import ShopLeftTagsBar from './components/shop_left_tags_bar';
 import ShopRightCommodityBar from './components/shop_right_commodity_bar';
 import CloseAccountBar from './components/close_account_bar';
@@ -138,14 +139,15 @@ const Index = (_props: ShopProps) => {
   return (
     <View className={ShopStyle([''])}>
       <View className={ShopStyle(['scroll'])}>
-        <View className={ShopStyle(['shop-card'])}>
+        {/* <View className={ShopStyle(['shop-card'])}>
           <View>店铺信息</View>
           <View>商品信息</View>
           <View>店铺信息</View>
           <View>商品信息</View>
           <View>店铺信息</View>
           <View>商品信息</View>
-        </View>
+        </View> */}
+        {/* <ShopInfoCard  /> */}
         <View className={ShopStyle(['commodity'])}>
           <ShopLeftTagsBar tags={tags} setActive={setActiveTag} />
           <ShopRightCommodityBar

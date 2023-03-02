@@ -1,8 +1,8 @@
 .shop-right-commodity-bar {
-
   &-operation-bar {
     height: 2rem;
-    border-bottom: 0.5px solid gray;
+    // border-bottom: 0.5px solid rgba(128, 128, 128, 0.491);
+    text-align: center;
   }
 
   &-list {
@@ -14,6 +14,16 @@
     overflow-x: hidden;
     overflow-y: scroll;
   }
+
+  &-add {
+    // width: 90%;
+    padding: 0.5rem;
+    padding-right: 1rem;
+    font-size: 0.7rem;
+    color: green;
+    float: right;
+  }
+
   &-item {
     width: 100%;
     height: 5rem;
@@ -40,19 +50,43 @@
     padding: 0.5rem;
   }
 
-  &-describe {
-    height: 3rem;
+  &-name {
+    height: 1rem;
     line-height: 1rem;
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     word-break: break-all;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
+  &-describe {
+    height: 2rem;
+    line-height: 1rem;
+    font-size: 0.6rem;
+    color: gray;
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &-button {
+    float: right;
+    padding: 0 0.5rem;
+  }
+
+  &-edit {
+    color: orange;
+  }
+  &-del {
+    color: darkred;
+  }
+
   &-counter {
     height: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    padding-top: 0.3rem;
+    // display: flex;
+    // justify-content: space-between;
+    // align-items: center;
+    font-size: 0.5rem;
   }
 }

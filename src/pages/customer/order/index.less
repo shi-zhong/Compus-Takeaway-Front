@@ -1,0 +1,67 @@
+.customer-order-detail {
+  &-page {
+    width: 100vw;
+    height: 100vh;
+    background: whitesmoke;
+    & ::-webkit-scrollbar{
+      display: none;
+    }
+  }
+  &-list {
+    width: 100vw;
+    padding-left: 4rem;
+    background-color: white;
+    height: calc(100vh - 4rem);
+    box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+  &-item {
+    width: 100%;
+    height: 5rem;
+    margin: 0;
+    overflow: hidden;
+    display: flex;
+  }
+
+  &-avatar {
+    width: 4.5rem;
+    border-radius: 0.5rem;
+    margin: 0.25rem;
+    vertical-align: middle;
+  }
+
+  &-right-counter {
+    display: inline-block;
+    height: 100%;
+    width: calc(100vw - 9rem);
+    padding: 0.5rem;
+  }
+
+  &-describe {
+    height: 3rem;
+    line-height: 1rem;
+    font-size: 0.9rem;
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &-counter {
+    height: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+
+.card {
+  width: 90vw;
+  background: white;
+  margin: 1rem auto;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  box-shadow: 0px 1px 7px 0px rgb(237, 238, 241);
+}

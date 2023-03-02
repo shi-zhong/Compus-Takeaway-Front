@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { View, Image } from '@tarojs/components';
+import { View } from '@tarojs/components';
 import { Input, Button } from '@nutui/nutui-react-taro';
 import { ClassNameFactory } from '@/common/className';
 
 import './index.less';
 
-interface HeaderProps {}
+interface HeaderProps {
+  handleSearch: (key:string) => void
+}
 
 const prefix = 'customer-header-';
 const CustomerHeader = ClassNameFactory(prefix);
@@ -13,19 +15,14 @@ const CustomerHeader = ClassNameFactory(prefix);
 const Index = (props: HeaderProps) => {
   const [inputvalue, setInputvalue] = useState('');
 
-  const submitHandler = () => {
-    // submit inputvalue
-  };
-
   return (
     <View className={CustomerHeader([''])}>
       <View className={CustomerHeader(['search'])}>
         <Input
           className={CustomerHeader(['input'])}
           defaultValue={inputvalue}
-          placeholder={prefix}
+          placeholder='看看有啥美食？'
           onChange={(val) => {
-            console.log(val);
             setInputvalue(val);
           }}
         />
@@ -33,7 +30,7 @@ const Index = (props: HeaderProps) => {
         <Button
           className={CustomerHeader(['button'])}
           type='info'
-          onClick={() => submitHandler()}
+          onClick={() => props.handleSearch(inputvalue)}
         >
           搜索
         </Button>

@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { View, ScrollView, Text } from '@tarojs/components';
 import { Menubar } from '@/components/menubar';
 
@@ -7,67 +8,86 @@ import { Header, Selector } from './components';
 import './index.less';
 
 const Index = () => {
-  const menus = [
-    {
-      id: 10,
-      avatar: Home,
-      shop_name: '超级大大褂超级大大褂超级大大褂超级大大褂',
-      star: 4.5,
-      start_delivery: 14.5,
-      monthly: 218,
-      tags: [{ name: '买过' }],
-    },
-    {
-      id: 11,
-      avatar: Home,
-      shop_name: '超级大大褂超级大大褂超级大大褂超级大大褂',
-      star: 4.5,
-      start_delivery: 14.5,
-      monthly: 218,
-      tags: [{ name: '买过' }],
-    },
-    {
-      id: 12,
-      avatar: Home,
-      shop_name: '超级大大褂超级大大褂超级大大褂超级大大褂',
-      star: 4.5,
-      start_delivery: 14.5,
-      monthly: 218,
-      tags: [{ name: '买过' }],
-    },
-    {
-      id: 13,
-      avatar: Home,
-      shop_name: '超级大大褂超级大大褂超级大大褂超级大大褂',
-      star: 4.5,
-      start_delivery: 14.5,
-      monthly: 218,
-      tags: [{ name: '买过' }],
-    },
-    {
-      id: 14,
-      avatar: Home,
-      shop_name: '超级大大褂超级大大褂超级大大褂超级大大褂',
-      star: 4.5,
-      start_delivery: 14.5,
-      monthly: 218,
-      tags: [{ name: '买过' }],
-    },
-    {
-      id: 15,
-      avatar: Home,
-      shop_name: '超级大大褂超级大大褂超级大大褂超级大大褂',
-      star: 4.5,
-      start_delivery: 14.5,
-      monthly: 218,
-      tags: [{ name: '买过' }],
-    },
-  ];
+  useEffect(() => {
+    const menus = [
+      {
+        id: 10,
+        avatar: Home,
+        shop_name: '超级大大褂超级大大褂超级大大褂超级大大褂',
+        star: 4.5,
+        start_delivery: 14.5,
+        monthly: 218,
+        intro: '好吃的好吃的好吃的好吃的好吃的好吃的好吃的好吃的好吃的好吃的好吃的好吃的好吃的好吃的好吃的',
+      },
+      {
+        id: 11,
+        avatar: Home,
+        shop_name: '超级大大褂超级大大褂超级大大褂超级大大褂',
+        star: 4.5,
+        start_delivery: 14.5,
+        monthly: 218,
+        intro: '好吃的',
+      },
+      {
+        id: 12,
+        avatar: Home,
+        shop_name: '超级大大褂超级大大褂超级大大褂超级大大褂',
+        star: 4.5,
+        start_delivery: 14.5,
+        monthly: 218,
+        intro: '好吃的',
+      },
+      {
+        id: 13,
+        avatar: Home,
+        shop_name: '超级大大褂超级大大褂超级大大褂超级大大褂',
+        star: 4.5,
+        start_delivery: 14.5,
+        monthly: 218,
+        intro: '好吃的',
+      },
+      {
+        id: 14,
+        avatar: Home,
+        shop_name: '超级大大褂超级大大褂超级大大褂超级大大褂',
+        star: 4.5,
+        start_delivery: 14.5,
+        monthly: 218,
+        intro: '好吃的',
+      },
+      {
+        id: 15,
+        avatar: Home,
+        shop_name: '超级大大褂超级大大褂超级大大褂超级大大褂',
+        star: 4.5,
+        start_delivery: 14.5,
+        monthly: 218,
+        intro: '好吃的',
+      },
+    ];
+    setMenu(menus);
+  }, []);
+
+  const [menus, setMenu] = useState([] as any[]);
+
+  const [options, setOptions] = useState(
+    [] as { value: string | number; text: string | number }[],
+  );
+
+  const handleSearch = (searchInfo: string) => {
+    console.log(options, searchInfo);
+  };
+
+  const syncSelector = (
+    selected: { value: number | string; text: string }[],
+  ) => {
+    setOptions(selected);
+  };
 
   return (
     <View>
-      <Header />
-      <Selector />
+      <Header handleSearch={handleSearch} />
+      <Selector syncSelector={syncSelector} />
       <ScrollView
         className='customer-home-page-scroll'
         scrollY
@@ -88,8 +108,8 @@ const Index = () => {
                 key: 'star and monthly',
                 node: (
                   <>
-                    <Text>{menu.star}分</Text>
-                    {'  '}
+                    <Text style={{ color: 'orange' }}>{menu.star}分</Text>
+                    &nbsp; &nbsp; &nbsp;
                     <Text>月售{menu.monthly}</Text>
                   </>
                 ),
@@ -100,13 +120,7 @@ const Index = () => {
               },
               {
                 key: 'tags',
-                node: (
-                  <>
-                    {menu.tags.map((tag) => (
-                      <View key={tag.name}>{tag.name}</View>
-                    ))}
-                  </>
-                ),
+                node: <>{menu.intro}</>,
               },
             ]}
           />

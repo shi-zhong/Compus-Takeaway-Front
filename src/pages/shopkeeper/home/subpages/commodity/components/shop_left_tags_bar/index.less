@@ -41,6 +41,23 @@
       border-radius: 50%;
     }
 
+    &-update-icon::after {
+      content: '#';
+
+      position: absolute;
+      right: 0.5rem;
+      bottom: 50%;
+      transform: translate(0, 50%);
+
+      display: block;
+      width: 0.5rem;
+      height: 0.5rem;
+
+      text-align: center;
+      line-height: 0.5rem;
+      color: darkred;
+    }
+
     &-text {
       display: inline-block;
       width: 3rem;
@@ -51,6 +68,11 @@
 
     &-add {
       color: green;
+      font-size: 0.7rem;
+    }
+
+    &-update {
+      color: orange;
       font-size: 0.7rem;
     }
 

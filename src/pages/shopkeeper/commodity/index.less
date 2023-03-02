@@ -1,0 +1,59 @@
+.commodity-form {
+  &-page {
+    height: 100vh;
+    background: whitesmoke;
+    overflow: hidden;
+  }
+  &-wrapper {
+    margin: 1rem;
+    & .inputs {
+      margin: 0.5rem 0;
+      &:last-child {
+        margin: 0;
+      }
+    }
+  }
+  &-card {
+
+    background: white;
+
+    &-title {
+      background-color: white;
+      padding: 0.5rem 1.25rem;
+      margin: 0.5rem 0 0 0;
+
+      line-height: 1.25rem;
+
+      font-size: 0.7rem;
+      box-sizing: border-box;
+      border-radius: 0.25rem 0.25rem 0 0;
+    }
+  }
+
+  &-commit {
+    margin: 1rem auto;
+    color: white;
+    background-color: rgb(43, 163, 211);
+  }
+
+  &-add {
+    float: right;
+    color: green;
+  }
+
+  &-tag {
+    display: inline-block;
+    // border: 0.5px solid rgba(0,0,0,0.6);
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    min-width: 3rem;
+    text-align: center;
+    font-size: 0.6rem;
+    padding: 0 1rem;
+    box-sizing: border-box;
+    border-radius: 1rem;
+    margin: 0.1rem;
+    &-list {
+      padding: 0 1.25rem 0.25rem 1.25rem;
+    }
+  }
+}

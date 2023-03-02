@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View } from '@tarojs/components';
 import {
   Collapse,
@@ -7,6 +7,7 @@ import {
   Button,
   Dialog,
 } from '@nutui/nutui-react-taro';
+import { Res, getAddressList, delAddress } from '@/api';
 import './index.less';
 
 interface CustomerAddressProps {}
@@ -15,52 +16,44 @@ interface AddressModel {
   id: number;
   address: string;
   phone: string;
-  name: string;
+  receiver: string;
 }
 
 const Index = (_props: CustomerAddressProps) => {
-  const [address, setAddress] = useState([
-    {
-      id: 1,
-      address: '华中师范大学华中师范大学华中师范大学华中师范大学华中师范大学',
-      phone: '13879645384',
-      name: '高启强',
-    },
-    {
-      id: 2,
-      address: '华中师范大学',
-      phone: '13879645384',
-      name: '高启强',
-    },
-    {
-      id: 3,
-      address: '华中师范大学',
-      phone: '13879645384',
-      name: '高启强',
-    },
-    {
-      id: 4,
-      address: '华中师范大学',
-      phone: '13879645384',
-      name: '高启强',
-    },
-  ] as AddressModel[]);
+  useEffect(() => {
+    getAddressList().then((res) => {
+      Res(res, {
+        OK: () => {
+          setAddress(res.data.address);
+        },
+      });
+    });
+  }, []);
+
+  const [address, setAddress] = useState([] as AddressModel[]);
 
   const [activeKey, setActiveKey] = useState('0');
+  const [delKey, setDelKey] = useState(0);
   const [visible, setVisible] = useState(false);
 
-  const handleAddressDelete = (id: string | number) => {
-    console.log(id);
+  const handleAddressDelete = (id: number) => {
+    delAddress(id).then((res) => {
+      Res(res, {
+        OK:() => {
+          setAddress(address.filter((i) => (i.id != id)))
+          setActiveKey('0')
+          setDelKey(0)
+        }
+      })
+    });
   };
-
-  console.log(Dialog);
 
   return (
     <View className='customer-address-page'>
       <View
         className='customer-address-float-adder'
         onClick={() =>
-          Taro.navigateTo({ url: 'pages/address/subpage/adder/index' })
+          Taro.navigateTo({ url: 'pages/customer/address/subpage/adder/index' })
         }
       >
         +
@@ -70,7 +63,10 @@ const Index = (_props: CustomerAddressProps) => {
         okText='确认'
         title='请确认操作'
         visible={visible}
-        onOk={() => setVisible(false)}
+        onOk={() => {
+          setVisible(false);
+          handleAddressDelete(delKey);
+        }}
         onCancel={() => setVisible(false)}
       >
         确认删除该地址么？
@@ -90,7 +86,7 @@ const Index = (_props: CustomerAddressProps) => {
             name={i.id.toString()}
             style={{ margin: '.5rem 0' }}
           >
-            <View className='customer-address-listitem-line'>{i.name}</View>
+            <View className='customer-address-listitem-line'>{i.receiver}</View>
             <View className='customer-address-listitem-line'>{i.phone}</View>
             <View className='customer-address-listitem-line'>{i.address}</View>
             <View className='customer-address-listitem-button'>
@@ -98,7 +94,7 @@ const Index = (_props: CustomerAddressProps) => {
                 className='customer-address-listitem-button-ref'
                 onClick={() =>
                   Taro.navigateTo({
-                    url: `pages/address/subpage/adder/index?action=edit&name=${i.name}&phone=${i.phone}&address=${i.address}`,
+                    url: `pages/customer/address/subpage/adder/index?action=edit&id=${i.id}&receiver=${i.receiver}&phone=${i.phone}&address=${i.address}`,
                   })
                 }
               >
@@ -107,6 +103,7 @@ const Index = (_props: CustomerAddressProps) => {
               <Button
                 className='customer-address-listitem-button-ref'
                 onClick={() => {
+                  setDelKey(i.id)
                   setVisible(true);
                 }}
               >

@@ -79,6 +79,8 @@ const config = {
     '@/pages': path.resolve(__dirname, '..', 'src/pages'),
     '@/common': path.resolve(__dirname, '..', 'src/common'),
     '@/assets': path.resolve(__dirname, '..', 'src/assets'),
+    '@/api': path.resolve(__dirname, '..', 'src/api'),
+    '@/code': path.resolve(__dirname, '..', 'src/code'),
   },
 }
 

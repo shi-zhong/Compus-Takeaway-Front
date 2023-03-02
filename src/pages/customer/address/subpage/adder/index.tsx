@@ -1,26 +1,61 @@
 import Taro from '@tarojs/taro';
+import { useEffect, useState } from 'react';
 import { View, Button } from '@tarojs/components';
 import { Input, TextArea } from '@nutui/nutui-react-taro';
-import { useEffect, useState } from 'react';
+import { Res, postAddressAdd, putAddressUpdate } from '@/api';
 
 import './index.less';
 
 interface CustomerAddressAdderProps {}
 
 const Index = (_props: CustomerAddressAdderProps) => {
-  const [name, setName] = useState('');
+  const [receiver, setReceiver] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
+  const [id, setId] = useState('0');
+  const [params, setParam] = useState(null as any);
 
   useEffect(() => {
-    const params = Taro.getCurrentInstance().router?.params;
-    console.log(this);
+    const param = Taro.getCurrentInstance().router?.params;
+    setParam(param);
     if (params?.action == 'edit') {
-      setName(decodeURI(params?.name || ''));
+      setReceiver(decodeURI(params?.receiver || ''));
       setPhone(decodeURI(params?.phone || ''));
       setAddress(decodeURI(params?.address || ''));
+      setId(decodeURI(params?.id || '0'));
     }
-  }, []);
+  }, [params?.action, params?.address, params?.id, params?.phone, params?.receiver]);
+
+  const handleSubmit = () => {
+    if (params?.action == 'edit') {
+      putAddressUpdate({
+        id: parseInt(id),
+        receiver,
+        phone,
+        address,
+      }).then((res) => {
+        Res(res, {
+          OK: ()=> {
+            alert('suucess');
+            Taro.navigateBack({ delta: 1 });
+          }
+        })
+      });
+    } else {
+      postAddressAdd({
+        receiver,
+        phone,
+        address,
+      }).then((res) => {
+        Res(res, {
+          OK: () => {
+            alert('suucess');
+            Taro.navigateBack({ delta: 1 });
+          },
+        });
+      });
+    }
+  };
 
   return (
     <View className='customer-address-adder-page'>
@@ -30,7 +65,8 @@ const Index = (_props: CustomerAddressAdderProps) => {
           name='name'
           placeholder='请输入姓名'
           label='姓名'
-          defaultValue={name}
+          defaultValue={receiver}
+          onChange={(v) => setReceiver(v)}
         />
         <Input
           className='inputs'
@@ -40,6 +76,7 @@ const Index = (_props: CustomerAddressAdderProps) => {
           type='number'
           maxlength={11}
           defaultValue={phone}
+          onChange={(v) => setPhone(v)}
         />
         <View>
           <View className='customer-address-adder-textarea-title'>
@@ -49,10 +86,16 @@ const Index = (_props: CustomerAddressAdderProps) => {
             className='inputs'
             placeholder='请输入详细住址'
             defaultValue={address}
+            onChange={(v) => setAddress(v)}
             rows={5}
           />
         </View>
-        <Button className='customer-address-adder-commit'>提交</Button>
+        <Button
+          className='customer-address-adder-commit'
+          onClick={() => handleSubmit()}
+        >
+          提交
+        </Button>
       </View>
     </View>
   );
