@@ -1,196 +1,104 @@
-import { useState } from 'react';
+import Taro, { useDidShow } from '@tarojs/taro';
+import { useEffect, useState } from 'react';
 import { View, ScrollView, Image } from '@tarojs/components';
 import { Tabs, TabPane } from '@nutui/nutui-react-taro';
 import { ClassNameFactory } from '@/common/className';
+import { OrderStatus } from '@/code/code';
 
-import Home from '@/assets/icons/home-active.svg';
+import { Res, orderList } from '@/api';
 
 import './index.less';
 
 interface CustomerOrderProps {}
 
-const orders = [
-  {
-    id: 1,
-    avatar: Home,
-    shopname: '大大挂大大挂大大挂大大挂大大挂大大挂',
-    status: 0,
-    commodity: [
-      {
-        id: 1,
-        avatar: Home,
-        name: '美味炒鸡',
-        count: 2,
-        price: 14.5,
-      },
-      {
-        id: 2,
-        avatar: Home,
-        name: '美味炒鸡',
-        count: 2,
-        price: 14.5,
-      },
-      {
-        id: 3,
-        avatar: Home,
-        name: '美味炒鸡',
-        count: 2,
-        price: 14.5,
-      },
-      {
-        id: 4,
-        avatar: Home,
-        name: '美味炒鸡',
-        count: 2,
-        price: 14.5,
-      },
-      {
-        id: 5,
-        avatar: Home,
-        name: '美味炒鸡',
-        count: 2,
-        price: 14.5,
-      },
-    ],
-  },
-  {
-    id: 2,
-    avatar: Home,
-    shopname: '大大挂大大挂大大挂大大挂大大挂大大挂',
-    status: 0,
-    commodity: [
-      {
-        id: 1,
-        avatar: Home,
-        name: '美味炒鸡',
-        count: 2,
-        price: 14.5,
-      },
-      {
-        id: 2,
-        avatar: Home,
-        name: '美味炒鸡',
-        count: 2,
-        price: 14.5,
-      },
-      {
-        id: 3,
-        avatar: Home,
-        name: '美味炒鸡',
-        count: 2,
-        price: 14.5,
-      },
-      {
-        id: 4,
-        avatar: Home,
-        name: '美味炒鸡',
-        count: 2,
-        price: 14.5,
-      },
-      {
-        id: 5,
-        avatar: Home,
-        name: '美味炒鸡',
-        count: 2,
-        price: 14.5,
-      },
-    ],
-  },
-  {
-    id: 3,
-    avatar: Home,
-    shopname: '大大挂大大挂大大挂大大挂大大挂大大挂',
-    status: 0,
-    commodity: [
-      {
-        id: 1,
-        avatar: Home,
-        name: '美味炒鸡',
-        count: 2,
-        price: 14.5,
-      },
-      {
-        id: 2,
-        avatar: Home,
-        name: '美味炒鸡',
-        count: 2,
-        price: 14.5,
-      },
-      {
-        id: 3,
-        avatar: Home,
-        name: '美味炒鸡',
-        count: 2,
-        price: 14.5,
-      },
-      {
-        id: 4,
-        avatar: Home,
-        name: '美味炒鸡',
-        count: 2,
-        price: 14.5,
-      },
-      {
-        id: 5,
-        avatar: Home,
-        name: '美味炒鸡',
-        count: 2,
-        price: 14.5,
-      },
-    ],
-  },
-  {
-    id: 4,
-    avatar: Home,
-    shopname: '大大挂大大挂大大挂大大挂大大挂大大挂',
-    status: 0,
-    commodity: [
-      {
-        id: 1,
-        avatar: Home,
-        name: '美味炒鸡',
-        count: 2,
-        price: 14.5,
-      },
-      {
-        id: 2,
-        avatar: Home,
-        name: '美味炒鸡',
-        count: 2,
-        price: 14.5,
-      },
-      {
-        id: 3,
-        avatar: Home,
-        name: '美味炒鸡',
-        count: 2,
-        price: 14.5,
-      },
-      {
-        id: 4,
-        avatar: Home,
-        name: '美味炒鸡',
-        count: 2,
-        price: 14.5,
-      },
-      {
-        id: 5,
-        avatar: Home,
-        name: '美味炒鸡',
-        count: 2,
-        price: 14.5,
-      },
-    ],
-  },
- 
-];
+// const orders = [
+//   {
+//     id: 1,
+//     picture: Home,
+//     shopname: '大大挂大大挂大大挂大大挂大大挂大大挂',
+//     status: 0,
+//     commodity: [
+//       {
+//         id: 1,
+//         picture: Home,
+//         name: '美味炒鸡',
+//         count: 2,
+//         price: 14.5,
+//       },
+
+//     ],
+//   },
+// ];
 
 const Index = (_props: CustomerOrderProps) => {
   const OrderStyle = ClassNameFactory('orderbar-');
 
   const [tab1value, setTab1value] = useState('all');
 
-  const List = () => {
+  const [orders, setOrders] = useState([] as any[]);
+
+  useEffect(() => {
+    orderList().then((res) => {
+      Res(res, {
+        OK: () => {
+          setOrders(res.data.list);
+        },
+      });
+    });
+  }, []);
+
+  useDidShow(() => {
+    orderList().then((res) => {
+      Res(res, {
+        OK: () => {
+          setOrders(res.data.list);
+        },
+      });
+    });
+  });
+
+  const orderdoing = (i) => {
+    return (
+      i.Order.status != OrderStatus.OrderFinish &&
+      i.Order.status != OrderStatus.OrderCancel
+    );
+  };
+
+  const orderdone = (i) => {
+    return (
+      i.Order.status == OrderStatus.OrderFinish ||
+      i.Order.status == OrderStatus.OrderCancel
+    );
+  };
+
+  const orderStatusToString = (i) => {
+    switch (i.Order.status) {
+      case OrderStatus.OrderCreate:
+        return '待接单';
+      case OrderStatus.OrderPay:
+        return '待支付';
+      case OrderStatus.OrderAccept:
+        return '商家已接单';
+      case OrderStatus.OrderRiderAcccept:
+        return '骑手已接单';
+      case OrderStatus.OrderCookFinish:
+        return '已出单';
+      case OrderStatus.OrderDeliverBegin:
+        return '配送中';
+      case OrderStatus.OrderDeliverFinish:
+        return '已到达';
+      case OrderStatus.OrderFinish:
+        return '已完成';
+      case OrderStatus.OrderCancel:
+        return '已取消';
+    }
+  };
+
+  const List = (filterorder: any) => {
+    if (filterorder.length == 0) {
+      return <View className={OrderStyle(['blank'])}>无可用订单</View>;
+    }
+
     return (
       <ScrollView
         className='customer-orders-page-scroll'
@@ -199,19 +107,41 @@ const Index = (_props: CustomerOrderProps) => {
         scrollTop={20}
         refresherEnabled
       >
-        {orders.map((order) => {
-          const { id, shopname, avatar, commodity } = order;
+        {filterorder.map((order) => {
+          const { Commodity: commodity, Order: in_order, Shop: shop } = order;
+          const { id, commodity_id } = in_order;
+          const { name, avatar } = shop;
+
+          const price = commodity_id
+            .split(';')
+            .map((i) => {
+              const [ids, count] = i.split('/');
+              for (let j of commodity) {
+                if (j.id == parseInt(ids)) {
+                  return parseInt(count) * j.price;
+                }
+              }
+              return 0;
+            })
+            .reduce((i, j) => i + j, 0);
+
           return (
-            <View key={id} className={OrderStyle([''])}>
+            <View
+              key={id}
+              className={OrderStyle([''])}
+              onClick={() => {
+                Taro.navigateTo({ url: 'pages/customer/order/index?id=' + id });
+              }}
+            >
               <View className={OrderStyle(['shop-info'])}>
-                <View className={OrderStyle(['shop-name'])}>{shopname}</View>
-                <Image className={OrderStyle(['shop-avatar'])} src={avatar} />
+                <View className={OrderStyle(['shop-name'])}>{name}</View>
+                <Image className={OrderStyle(['shop-picture'])} src={avatar} />
               </View>
               <View className={OrderStyle(['commodity-info'])}>
                 <View
                   className={OrderStyle({
                     commodity: {
-                      '-avatar': true,
+                      '-picture': true,
                       '-list': commodity.length != 1,
                     },
                   })}
@@ -220,16 +150,16 @@ const Index = (_props: CustomerOrderProps) => {
                     .filter((_i, index) => index <= 2)
                     .map((i) => (
                       <Image
-                        className={OrderStyle(['commodity-avatar'])}
-                        key={i.avatar + i.id}
-                        src={i.avatar}
+                        className={OrderStyle(['commodity-picture'])}
+                        key={i.picture + i.id}
+                        src={i.picture}
                       />
                     ))}
                   {commodity[3] && (
                     <View className={OrderStyle(['commodity-mask-con'])}>
                       <Image
-                        className={OrderStyle(['commodity-avatar'])}
-                        src={commodity[3].avatar}
+                        className={OrderStyle(['commodity-picture'])}
+                        src={commodity[3].picture}
                       />
                       <View className={OrderStyle(['commodity-mask'])}>
                         +{commodity.length - 3}
@@ -247,10 +177,10 @@ const Index = (_props: CustomerOrderProps) => {
                 </View>
               </View>
               <View className={OrderStyle(['order-info'])}>
-                <View className={OrderStyle(['order-status'])}>已送达</View>
-                <View className={OrderStyle(['order-sum'])}>
-                  ￥{commodity.reduce((i, j) => i + j.price * j.count, 0)}
+                <View className={OrderStyle(['order-status'])}>
+                  {orderStatusToString(order)}
                 </View>
+                <View className={OrderStyle(['order-sum'])}>￥{price}</View>
               </View>
             </View>
           );
@@ -270,13 +200,13 @@ const Index = (_props: CustomerOrderProps) => {
         }}
       >
         <TabPane paneKey='all' title='全部'>
-          <List />
+          {List(orders)}
         </TabPane>
         <TabPane paneKey='doing' title='进行中'>
-          <List />
+          {List(orders.filter((i) => orderdoing(i)))}
         </TabPane>
         <TabPane paneKey='done' title='已完成'>
-          <List />
+          {List(orders.filter((i) => orderdone(i)))}
         </TabPane>
       </Tabs>
     </>

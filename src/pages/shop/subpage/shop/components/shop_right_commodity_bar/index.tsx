@@ -1,4 +1,4 @@
-import { View, Image } from '@tarojs/components';
+import { View, Image, Text } from '@tarojs/components';
 import { InputNumber } from '@nutui/nutui-react-taro';
 import { ClassNameFactory } from '@/common/className';
 import Box from '@/assets/icons/box.svg';
@@ -6,37 +6,46 @@ import Box from '@/assets/icons/box.svg';
 import './index.less';
 
 interface ShopRightCommodityBarProps {
-  commodity: { id: number; tag: string; price: number }[];
+  commodity: {
+    id: number;
+    name: string;
+    picture: string;
+    intro: string;
+    price: number;
+  }[];
   select: { id: number; count: number; price: number }[];
   handleSelectChange: (id: number, count: number, all: any) => void;
 }
 
 interface CommodityBoxProps {
   id: number;
-  tag: string;
+  name: string;
+  picture: string;
+  intro: string;
   price: number;
   select: { id: number; count: number; price: number } | undefined;
   handleSelectChange: (id: number, count: number, all: any) => void;
 }
 
 const CommodityBox = (props: CommodityBoxProps) => {
-  const { id, tag, select, price, handleSelectChange } = props;
+  const { id, name, intro, picture, select, price, handleSelectChange } = props;
   const Style = ClassNameFactory('shop-right-commodity-bar-');
 
   return (
     <View className={Style(['item'])}>
       <View>
-        <Image className={Style(['avatar'])} src={Box} />
+        <Image className={Style(['avatar'])} src={picture} />
       </View>
       <View className={Style(['right-counter'])}>
-        <View className={Style(['describe'])}>{tag}</View>
+        <View className={Style(['name'])}>{name}</View>
+        <View className={Style(['describe'])}>{intro}</View>
         <View className={Style(['counter'])}>
-          <View>￥{price}</View>
+          <Text>￥{price}</Text>
           <InputNumber
             modelValue={select?.count || undefined}
             min={0}
             onChangeFuc={(param: number) => {
-              handleSelectChange(id, param, { id, tag, price });
+              handleSelectChange(id, param, { name, picture, intro, price });
             }}
           />
         </View>

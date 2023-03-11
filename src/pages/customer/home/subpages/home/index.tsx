@@ -1,92 +1,69 @@
+import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 import { View, ScrollView, Text } from '@tarojs/components';
 import { Menubar } from '@/components/menubar';
+import { Res, search } from '@/api';
 
-import Home from '@/assets/icons/home-active.svg';
 import { Header, Selector } from './components';
 
 import './index.less';
 
 const Index = () => {
   useEffect(() => {
-    const menus = [
-      {
-        id: 10,
-        avatar: Home,
-        shop_name: '超级大大褂超级大大褂超级大大褂超级大大褂',
-        star: 4.5,
-        start_delivery: 14.5,
-        monthly: 218,
-        intro: '好吃的好吃的好吃的好吃的好吃的好吃的好吃的好吃的好吃的好吃的好吃的好吃的好吃的好吃的好吃的',
-      },
-      {
-        id: 11,
-        avatar: Home,
-        shop_name: '超级大大褂超级大大褂超级大大褂超级大大褂',
-        star: 4.5,
-        start_delivery: 14.5,
-        monthly: 218,
-        intro: '好吃的',
-      },
-      {
-        id: 12,
-        avatar: Home,
-        shop_name: '超级大大褂超级大大褂超级大大褂超级大大褂',
-        star: 4.5,
-        start_delivery: 14.5,
-        monthly: 218,
-        intro: '好吃的',
-      },
-      {
-        id: 13,
-        avatar: Home,
-        shop_name: '超级大大褂超级大大褂超级大大褂超级大大褂',
-        star: 4.5,
-        start_delivery: 14.5,
-        monthly: 218,
-        intro: '好吃的',
-      },
-      {
-        id: 14,
-        avatar: Home,
-        shop_name: '超级大大褂超级大大褂超级大大褂超级大大褂',
-        star: 4.5,
-        start_delivery: 14.5,
-        monthly: 218,
-        intro: '好吃的',
-      },
-      {
-        id: 15,
-        avatar: Home,
-        shop_name: '超级大大褂超级大大褂超级大大褂超级大大褂',
-        star: 4.5,
-        start_delivery: 14.5,
-        monthly: 218,
-        intro: '好吃的',
-      },
-    ];
-    setMenu(menus);
+    handleSearch('', [
+      { value: 999, text: '点击选择' },
+      { value: 999, text: '店铺位置' },
+    ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [menus, setMenu] = useState([] as any[]);
 
-  const [options, setOptions] = useState(
-    [] as { value: string | number; text: string | number }[],
-  );
+  const [options, setOptions] = useState([
+    { value: 999, text: '点击选择' },
+    { value: 999, text: '店铺位置' },
+  ] as { value: string | number; text: string | number }[]);
 
-  const handleSearch = (searchInfo: string) => {
-    console.log(options, searchInfo);
+  const [searchKey, setSearchKey] = useState('');
+
+  const handleSearch = (
+    searchInfo: string,
+    opt?: { value: number; text: string }[],
+  ) => {
+    search({
+      search_keys: searchInfo.split(' ').filter((i) => i.length),
+      building: (opt && opt[0]?.value) || options[0]?.value || 999,
+      buildng_floor: (opt && opt[1]?.value && options[1]?.value) || 999,
+    }).then((res) => {
+      Res(res, {
+        OK: () => {
+          setMenu(res.data.shops || []);
+        },
+      });
+    });
   };
 
   const syncSelector = (
     selected: { value: number | string; text: string }[],
   ) => {
+    console.log(selected)
     setOptions(selected);
+    handleSearch(searchKey, selected as any);
+  };
+
+  const syncSearchKey = (key: string) => {
+    setSearchKey(key);
+  };
+
+  const handleJumpToShop = (id: number) => {
+    Taro.navigateTo({
+      url: `pages/shop/index?id=${id}`,
+    });
   };
 
   return (
     <View>
-      <Header handleSearch={handleSearch} />
+      <Header syncSearchKey={syncSearchKey} handleSearch={handleSearch} />
       <Selector syncSelector={syncSelector} />
       <ScrollView
         className='customer-home-page-scroll'
@@ -103,6 +80,7 @@ const Index = () => {
           <Menubar
             key={menu.id + 'forbidden' + menu.shop_name}
             {...menu}
+            onClick={handleJumpToShop}
             lines={[
               {
                 key: 'star and monthly',
@@ -116,7 +94,7 @@ const Index = () => {
               },
               {
                 key: 'start_delivery',
-                node: <>￥{menu.start_delivery}起送</>,
+                node: <>￥{menu.start_deliver}起送</>,
               },
               {
                 key: 'tags',
@@ -125,7 +103,10 @@ const Index = () => {
             ]}
           />
         ))}
-        <View className='customer-home-page-scroll-blank'></View>
+        {menus.length == 0 && (
+          <View className='customer-home-page-scroll-blank'>搜索不到想要的商品</View>
+        )}
+        <View className='customer-home-page-scroll-bottom-padding'></View>
       </ScrollView>
     </View>
   );

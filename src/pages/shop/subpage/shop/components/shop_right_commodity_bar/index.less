@@ -30,10 +30,20 @@
     padding: 0.5rem;
   }
 
-  &-describe {
-    height: 3rem;
+  &-name {
+    height: 1rem;
     line-height: 1rem;
-    font-size: 0.9rem;
+    font-size: 0.7rem;
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &-describe {
+    height: 2rem;
+    line-height: 1rem;
+    font-size: 0.6rem;
+    color: gray;
     word-break: break-all;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -41,8 +51,10 @@
 
   &-counter {
     height: 1rem;
+    padding-top: 0.3rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-size: 0.5rem;
   }
 }

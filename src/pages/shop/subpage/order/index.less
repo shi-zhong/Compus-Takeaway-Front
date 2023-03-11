@@ -61,7 +61,7 @@
 
   &-commodity-list {
     width: 90%;
-    min-height: 10rem;
+    // min-height: 10rem;
     margin: 0 auto;
     margin-bottom: 2rem;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
@@ -82,15 +82,16 @@
 
     &-avatar {
       width: 5rem;
+      border-radius: 0.5rem;
     }
     &-describe {
       width: calc(100% - 5rem);
 
-      & > :nth-child(1) {
-        height: 3rem;
+      & > :nth-child(2) {
+        height: 2.5rem;
       }
-      & > :nth-child(2),
-      & > :nth-child(3) {
+      & > :nth-child(3),
+      & > :nth-child(4) {
         height: 1rem;
 
         font-size: 0.5rem;
@@ -98,14 +99,22 @@
         line-height: 1.5rem;
         color: gray;
       }
-      & > :nth-child(3) {
+      & > :nth-child(4) {
         border: none;
       }
     }
     &-line {
-      padding: 0 1rem 0 0;
-      border-bottom: 0.5px solid rgba(146, 146, 146, 0.3);
+      padding: 0 0.5rem;
     }
+  }
+
+  &-name {
+    font-size: 0.9rem;
+  }
+
+  &-intro {
+    font-size: 0.7rem;
+    color: gray;
   }
 
   &-price {

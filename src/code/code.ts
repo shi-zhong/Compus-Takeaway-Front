@@ -6,6 +6,18 @@ enum Identity {
   IdentityAdmin = 5,
 }
 
+enum OrderStatus {
+  OrderCreate = 1,
+  OrderPay = 2,
+  OrderAccept = 3,
+  OrderRiderAcccept = 4,
+  OrderCookFinish = 5,
+  OrderDeliverBegin = 6,
+  OrderDeliverFinish = 7,
+  OrderFinish = 8,
+  OrderCancel = 9,
+}
+
 enum Code {
   OK = 20000,
 
@@ -19,7 +31,6 @@ enum Code {
   PhoneExist = 40013,
   MissingItems = 40021,
   MissingOrder = 40024,
-  
 
   UnAuthorized = 40300,
   TokenInvalid = 40301,
@@ -35,4 +46,4 @@ enum Code {
   DBEmpty = 60001,
 }
 
-export { Identity, Code };
+export { Identity, Code, OrderStatus };

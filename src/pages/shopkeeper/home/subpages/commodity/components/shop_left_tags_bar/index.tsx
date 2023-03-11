@@ -38,6 +38,7 @@ const Index = (props: ShopLeftTagsBarProps) => {
         },
       });
     });
+    console.log(12312)
   }, [componentsUpdate]);
 
   const handleOK = () => {
@@ -81,6 +82,7 @@ const Index = (props: ShopLeftTagsBarProps) => {
         },
       });
     });
+    setDelVisible(false)
   };
 
   return (
@@ -108,7 +110,7 @@ const Index = (props: ShopLeftTagsBarProps) => {
           border
           maxlength={10}
           defaultValue={tempTag.tag}
-          onChange={(val: string) => setTempTag({ id: 0, tag: val })}
+          onChange={(val: string) => setTempTag({ id: tempTag.id, tag: val })}
           placeholder='标签类别描述'
         />
       </Dialog>

@@ -3,6 +3,7 @@ export default defineAppConfig({
     'pages/login/index',
 
     'pages/shopkeeper/home/index',
+    'pages/shopkeeper/order/index',
     'pages/shopkeeper/editshop/index',
     'pages/shopkeeper/commodity/index',
 

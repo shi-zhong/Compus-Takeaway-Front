@@ -2,19 +2,19 @@ import Taro from '@tarojs/taro';
 import { View, Image } from '@tarojs/components';
 import { Button, Cell, CellGroup } from '@nutui/nutui-react-taro';
 import { useEffect, useState } from 'react';
-import { orderFinish, orderCancel, orderDetail, Res } from '@/api';
+import { orderAccept, orderCookFinish, orderDetail, Res } from '@/api';
 import { ClassNameFactory } from '@/common/className';
-import { ShopInfoCard } from '@/components/shop_info_card';
+// import { ShopInfoCard } from '@/components/shop_info_card';
 import { OrderStatus } from '@/code/code';
 import { MessageFuncProps, TopBarPage } from '@/components';
 
 import './index.less';
 
-interface OrderCustomerProps {
+interface OrderShopKeeperProps {
   message: MessageFuncProps;
 }
 
-const OrderCustomer = (_props: OrderCustomerProps) => {
+const OrderShopKeeper = (_props: OrderShopKeeperProps) => {
   const Style = ClassNameFactory('shopkeeper-order-todo-');
   const [ID, setID] = useState('0');
   const [commodity, setCommodity] = useState([] as any[]);
@@ -61,6 +61,7 @@ const OrderCustomer = (_props: OrderCustomerProps) => {
             .map((i) => i.split('/'));
 
           setShop(res.data.order.Shop);
+
           setOrder(res.data.order.Order);
           setCommodity(
             res.data.order.Commodity.map((i) => {
@@ -83,28 +84,24 @@ const OrderCustomer = (_props: OrderCustomerProps) => {
   };
 
   const handleClick = () => {
-    if (
-      order.status === OrderStatus.OrderCreate ||
-      order.status === OrderStatus.OrderAccept
-    ) {
-      orderCancel(order.id).then((res) => {
+    if (order.status === OrderStatus.OrderCreate) {
+      orderAccept(order.id).then((res) => {
         Res(res, {
           OK: () => {
-            _props.message.success('操作成功',()=>{
+            _props.message.success('处理成功', () => {
               Taro.navigateBack();
-            })
+            });
           },
         });
       });
-      return;
     }
-    if (order.status === OrderStatus.OrderDeliverFinish) {
-      orderFinish(order.id).then((res) => {
+    if (order.status === OrderStatus.OrderAccept) {
+      orderCookFinish(order.id).then((res) => {
         Res(res, {
           OK: () => {
-            _props.message.success('操作成功',()=>{
+            _props.message.success('处理成功', () => {
               Taro.navigateBack();
-            })
+            });
           },
         });
       });
@@ -115,7 +112,7 @@ const OrderCustomer = (_props: OrderCustomerProps) => {
     <View className={Style(['page'])}>
       <View className={Style([''])}>
         <View className={Style(['scroll-view'])}>
-          <ShopInfoCard {...shop} />
+          {/* <ShopInfoCard {...shop} /> */}
           <View className={Style(['commodity-list'])}>
             {commodity.length &&
               commodity.map((i) => (
@@ -160,27 +157,25 @@ const OrderCustomer = (_props: OrderCustomerProps) => {
             </CellGroup>
           </View>
         </View>
-        {(order.status === OrderStatus.OrderCreate ||
-          order.status === OrderStatus.OrderAccept ||
-          (order.status === OrderStatus.OrderDeliverFinish && '确认收货')) && (
-          <View className={Style(['confirm'])}>
-            <View>
-              <Button
-                type='info'
-                onClick={handleClick}
-                disabled={
-                  order.status !== OrderStatus.OrderAccept &&
-                  order.status !== OrderStatus.OrderCreate
-                }
-              >
-                {(order.status === OrderStatus.OrderCreate ||
-                  order.status === OrderStatus.OrderAccept) &&
-                  '取消订单'}
-                {order.status === OrderStatus.OrderDeliverFinish && '确认收货'}
-              </Button>
-            </View>
+
+        <View className={Style(['confirm'])}>
+          <View>
+            <Button
+              type='info'
+              onClick={handleClick}
+              disabled={
+                order.status !== OrderStatus.OrderAccept &&
+                order.status !== OrderStatus.OrderCreate
+              }
+            >
+              {order.status === OrderStatus.OrderCreate && '接受订单'}
+              {order.status === OrderStatus.OrderAccept && '商品出单'}
+              {order.status !== OrderStatus.OrderAccept &&
+                order.status !== OrderStatus.OrderCreate &&
+                '无操作'}
+            </Button>
           </View>
-        )}
+        </View>
       </View>
     </View>
   );
@@ -189,10 +184,10 @@ const OrderCustomer = (_props: OrderCustomerProps) => {
 const Index = () => {
   return (
     <TopBarPage title='订单详情'>
-      <OrderCustomer message={{} as any} />
+      <OrderShopKeeper message={{} as any} />
     </TopBarPage>
   );
 };
 
-export { OrderCustomerProps };
+export { Index as OrderShopKeeper, OrderShopKeeperProps };
 export default Index;

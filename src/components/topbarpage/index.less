@@ -1,0 +1,21 @@
+.topbar {
+  height: 2.5rem;
+  text-align: center;
+  line-height: 2.8rem;
+  box-shadow: 0 -2px 10px gray;
+  background: white;
+  position: relative;
+  font-size: 0.8rem;
+  &-page {
+    height: calc(100vh - 2.5rem);
+    overflow: hidden;
+  }
+  &-back {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 42Px;
+    height: 42Px;
+    transform: translate(25%, -50%);
+  }
+}

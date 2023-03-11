@@ -10,11 +10,11 @@ interface ShopInfoCardProps {
   address_id: number;
   address: string;
   intro: string;
-  statistic: {
-    star: number;
-    monthly: number;
-  };
-  onClick?:() => void;
+
+  star: number;
+  monthly: number;
+
+  onClick?: () => void;
 }
 
 /**
@@ -23,17 +23,17 @@ interface ShopInfoCardProps {
  * @returns
  */
 const Index = (props: ShopInfoCardProps) => {
-  const { name, statistic, avatar, intro } = props;
+  const { name, star, monthly, avatar, intro } = props;
   const Style = ClassNameFactory('shop-info-card-');
 
   return (
-    <View className={Style([''])} onClick={props?.onClick || (()=>{})}>
+    <View className={Style([''])} onClick={props?.onClick || (() => {})}>
       <View className={Style(['upper'])}>
         <View className={Style(['text'])}>
           <View className={Style(['title'])}>{name}</View>
           <View>
-            <Text className={Style(['star'])}>{statistic.star}分</Text>{' '}
-            月售{statistic.monthly}
+            <Text className={Style(['star'])}>{star}分</Text> 月售
+            {monthly}
           </View>
         </View>
 

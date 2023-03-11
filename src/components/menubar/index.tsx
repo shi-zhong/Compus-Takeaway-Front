@@ -5,16 +5,14 @@ import './index.less';
 interface MenubarProps {
   id: number;
   avatar: string;
-  shop_name: string;
+  name: string;
   lines: { key: string; node: ReactNode; align?: 'left' | 'center' | 'right' }[];
   onClick?: undefined | ((id: number) => void);
 }
 
 const Index = (props: MenubarProps) => {
   const prefix = 'menubar-';
-  const { id, avatar, shop_name, lines, onClick } = props;
-
-  console.log(lines);
+  const { id, avatar, name, lines, onClick } = props;
 
   return (
     <View
@@ -26,7 +24,7 @@ const Index = (props: MenubarProps) => {
       <Image className={prefix + 'left'} src={avatar} />
 
       <View className={prefix + 'right'}>
-        <View className={prefix + 'line'}>{shop_name}</View>
+        <View className={prefix + 'line'}>{name}</View>
         {lines.map((line, index) => (
           <View
             key={line.key + 'theindex' + index}

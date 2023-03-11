@@ -3,14 +3,18 @@ import { useEffect, useState } from 'react';
 import { View, Button } from '@tarojs/components';
 import { Input, TextArea } from '@nutui/nutui-react-taro';
 import { Res, shopInfoGet, shopInfoUpdate } from '@/api';
+import { MessageFuncProps, TopBarPage, Upload } from '@/components';
 
 import './index.less';
 
-interface CustomerAddressAdderProps {}
+interface ShopKeeperEditShop {
+  message: MessageFuncProps;
+}
 
-const Index = (_props: CustomerAddressAdderProps) => {
+const ShopKeeperEditShopPage = (_props: ShopKeeperEditShop) => {
   const [id, setId] = useState(0);
   const [name, setName] = useState('');
+  const [startDelever, setStartDelevery] = useState('');
   const [intro, setIntro] = useState('');
   const [avatar, setAvatar] = useState('');
   useEffect(() => {
@@ -30,13 +34,15 @@ const Index = (_props: CustomerAddressAdderProps) => {
     shopInfoUpdate({
       name,
       intro,
-      avatar:
-        'https://st-gdx.dancf.com/gaodingx/0/uxms/design/20210812-184716-154c.png',
+      avatar,
+      start_deliver: parseFloat(startDelever),
     }).then((res) => {
       Res(res, {
         OK: () => {
-          Taro.navigateBack({
-            delta: 1,
+          _props.message.success('修改成功', () => {
+            Taro.navigateBack({
+              delta: 1,
+            });
           });
         },
       });
@@ -53,6 +59,28 @@ const Index = (_props: CustomerAddressAdderProps) => {
           label='店铺名'
           defaultValue={name}
           onChange={(v) => setName(v)}
+        />
+
+        <View>
+          <View className='customer-address-adder-textarea-title'>
+            店铺头像
+            <Upload
+              url={avatar}
+              callback={(i) => {
+                setAvatar(i);
+              }}
+            />
+          </View>
+        </View>
+
+        <Input
+          className='inputs'
+          name='start_delever'
+          placeholder='请输入起送价'
+          label='起送价'
+          type='number'
+          defaultValue={startDelever}
+          onChange={(v) => setStartDelevery(v)}
         />
 
         <View>
@@ -78,5 +106,13 @@ const Index = (_props: CustomerAddressAdderProps) => {
   );
 };
 
-export { Index as CustomerAddressAdder, CustomerAddressAdderProps };
+const Index = () => {
+  return (
+    <TopBarPage title='修改商店信息'>
+      <ShopKeeperEditShopPage message={{} as any} />
+    </TopBarPage>
+  );
+};
+
+export { ShopKeeperEditShop };
 export default Index;

@@ -1,8 +1,10 @@
+import Taro from '@tarojs/taro';
 import { View } from '@tarojs/components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Popup } from '@nutui/nutui-react-taro';
 import { ClassNameFactory } from '@/common/className';
-import ShopInfoCard from  '@/components/shop_info_card'
+import ShopInfoCard from '@/components/shop_info_card';
+import { commodityAll, Res, shopInfoGet, tagAll } from '@/api';
 import ShopLeftTagsBar from './components/shop_left_tags_bar';
 import ShopRightCommodityBar from './components/shop_right_commodity_bar';
 import CloseAccountBar from './components/close_account_bar';
@@ -10,83 +12,79 @@ import CloseAccountBar from './components/close_account_bar';
 import './index.less';
 
 interface ShopProps {
+  commodity: any[];
   syncCommodity: (i: any) => void;
 }
 
-const simpleTags = (i) => {
-  const ret: { id: number; tag: string }[] = [];
-  for (let j = 1; j <= i; j++)
-    ret.push({
-      id: j,
-      tag: 'tag' + j,
-    });
-  return ret;
-};
-
-const Index = (_props: ShopProps) => {
+const Index = (props: ShopProps) => {
   const ShopStyle = ClassNameFactory('shop-');
 
-  const tags = simpleTags(3);
+  const [ID, setID] = useState(0);
 
-  const commodity = [
-    {
-      tag_id: 1,
-      commodities: [
-        {
-          id: 1,
-          tag: 'eat1',
-          price: 2,
-        },
-        {
-          id: 2,
-          tag: 'eat2',
-          price: 4,
-        },
-        {
-          id: 3,
-          tag: 'eat3',
-          price: 6,
-        },
-      ],
-    },
-    {
-      tag_id: 2,
-      commodities: [
-        {
-          id: 4,
-          tag: 'eat4',
-          price: 4,
-        },
-        {
-          id: 5,
-          tag: 'eat5',
-          price: 6,
-        },
-      ],
-    },
-    {
-      tag_id: 3,
-      commodities: [
-        {
-          id: 1,
-          tag: 'eat1',
-          price: 2,
-        },
-        {
-          id: 2,
-          tag: 'eat2',
-          price: 4,
-        },
-        {
-          id: 3,
-          tag: 'eat3',
-          price: 6,
-        },
-      ],
-    },
-  ];
+  const [shop, setShop] = useState({
+    id: 0,
+    name: '',
+    avatar: '',
+    address_id: 0,
+    address: '',
+    intro: '',
+    star: 0,
+    monthly: 0,
+  } as any);
 
-  const [activeTag, setActiveTag] = useState(tags[0].id || 0);
+  const [tags, setTags] = useState([] as any[]);
+  const [commoditys, setCommoditys] = useState([] as any[]);
+
+  useEffect(() => {
+    setSelectCommodity(props.commodity)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
+
+  useEffect(() => {
+    const params = Taro.getCurrentInstance().router?.params;
+    const ids = parseInt(decodeURI(params?.id || '0'));
+    setID(ids);
+
+    shopInfoGet(ids).then((res) => {
+      Res(res, {
+        OK: () => {
+          setShop(res.data);
+        },
+      });
+    });
+
+    tagAll(ids).then((res) => {
+      Res(res, {
+        OK: () => {
+          setTags(res.data.tags);
+        },
+      });
+    });
+
+    commodityAll(ids).then((res) => {
+      Res(res, {
+        OK: () => {
+          setCommoditys(
+            res.data.list.map((i) => ({
+              id: i.id,
+              tags: JSON.parse(i.tags),
+              intro: i.intro,
+              name: i.name,
+              picture: i.picture,
+              price: i.price,
+            })),
+          );
+        },
+      });
+    });
+  }, []);
+
+  const getActiveTagCommodity = () => {
+    if (active == 0) return commoditys;
+    else return commoditys.filter((i) => i.tags.indexOf(active) != -1);
+  };
+
+  const [active, setActiveTag] = useState(0);
 
   const { visible, setVisible } = {
     visible: false,
@@ -95,16 +93,7 @@ const Index = (_props: ShopProps) => {
 
   const [selectCommodity, setSelectCommodity] = useState([] as any[]);
 
-  const getActiveTagCommodity = () => {
-    for (let i of commodity) {
-      if (i.tag_id == activeTag) {
-        return i.commodities;
-      }
-    }
-    return [];
-  };
-
-  const handleEditCommodity = (id: number, count: number, all: any) => {
+  const handleSelectChange = (id: number, count: number, all: any) => {
     let flag = false;
     const copy = selectCommodity.map((i) => {
       if (i.id == id) {
@@ -118,8 +107,7 @@ const Index = (_props: ShopProps) => {
       copy.push({
         id,
         count,
-        price: all.price,
-        tag: all.tag,
+        all,
       });
     }
 
@@ -127,33 +115,25 @@ const Index = (_props: ShopProps) => {
   };
 
   const handleSumPrice = () =>
-    selectCommodity.reduce((i, j) => i + j.count * j.price, 0);
+    selectCommodity.reduce((i, j) => i + j.count * j.all.price, 0);
 
   const handleItemsCounts = () =>
     selectCommodity.reduce((i, j) => i + j.count * 1, 0);
 
   const handleClick = () => {
-    _props.syncCommodity(selectCommodity);
+    props.syncCommodity(selectCommodity);
   };
 
   return (
     <View className={ShopStyle([''])}>
       <View className={ShopStyle(['scroll'])}>
-        {/* <View className={ShopStyle(['shop-card'])}>
-          <View>店铺信息</View>
-          <View>商品信息</View>
-          <View>店铺信息</View>
-          <View>商品信息</View>
-          <View>店铺信息</View>
-          <View>商品信息</View>
-        </View> */}
-        {/* <ShopInfoCard  /> */}
+        <ShopInfoCard {...shop} />
         <View className={ShopStyle(['commodity'])}>
           <ShopLeftTagsBar tags={tags} setActive={setActiveTag} />
           <ShopRightCommodityBar
             commodity={getActiveTagCommodity()}
             select={selectCommodity}
-            handleSelectChange={handleEditCommodity}
+            handleSelectChange={handleSelectChange}
           />
         </View>
         <CloseAccountBar

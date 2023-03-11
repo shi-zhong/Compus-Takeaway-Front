@@ -1,9 +1,9 @@
 import { View } from '@tarojs/components';
-import { Picker, Button } from '@nutui/nutui-react-taro';
-import { ClassNameFactory } from '@/common/className';
-
 import { useEffect, useState } from 'react';
+import { ClassNameFactory } from '@/common/className';
+import { Picker, Button } from '@nutui/nutui-react-taro';
 
+import { Res, buildingList } from '@/api';
 import './index.less';
 
 interface SelectorProps {
@@ -32,32 +32,34 @@ const CustomerHomePageSelectorStyle = ClassNameFactory(prefix);
 
 const Index = (props: SelectorProps) => {
   useEffect(() => {
-    setCustmerData([
-      {
-        value: 1,
-        text: '学子餐厅',
-        children: [
-          { value: 1, text: '1F' },
-          { value: 2, text: '2F' },
-        ],
-      },
-      {
-        value: 2,
-        text: '东区',
-        children: [
-          { value: 1, text: '1F' },
-          { value: 2, text: '2F' },
-        ],
-      },
-    ]);
+    buildingList().then((res) => {
+      Res(res, {
+        OK: () => {
+          setBuilding(
+            res.data.buildings.map((i) => {
+              const children = JSON.parse(i.accept_floor).map((j) => ({
+                value: j,
+                text: `${j}F`,
+              }));
+              return {
+                value: i.id,
+                text: i.name,
+                children: [{ value: 999, text: '全部' }, ...children],
+              };
+            }),
+          );
+        },
+      });
+    });
   }, []);
 
   const [isVisible, setIsVisible] = useState(false);
-  const [custmerData, setCustmerData] = useState([] as CustomPicker[]);
+  const [building, setBuilding] = useState([] as CustomPicker[]);
 
-  const [options, setOptions] = useState(
-    [] as { value: string | number; text: string | number }[],
-  );
+  const [options, setOptions] = useState([
+    { value: 999, text: '点击选择' },
+    { value: 999, text: '店铺位置' },
+  ] as { value: string | number; text: string | number }[]);
 
   const setChooseValueCustmer = (
     _values: (string | number)[],
@@ -70,8 +72,14 @@ const Index = (props: SelectorProps) => {
   };
 
   const resetChosenValue = () => {
-    setOptions([]);
-    props.syncSelector([]);
+    setOptions([
+      { value: 999, text: '点击选择' },
+      { value: 999, text: '店铺位置' },
+    ]);
+    props.syncSelector([
+      { value: 999, text: '点击选择' },
+      { value: 999, text: '店铺位置' },
+    ]);
   };
 
   return (
@@ -81,9 +89,7 @@ const Index = (props: SelectorProps) => {
           style={{ width: '100%' }}
           onClick={() => setIsVisible(!isVisible)}
         >
-          {!options.length
-            ? '点击选择店铺位置'
-            : options.map((i) => i.text).join('-')}
+          {options.map((i) => i.text).join('-')}
         </View>
 
         <Button
@@ -95,7 +101,7 @@ const Index = (props: SelectorProps) => {
       </View>
       <Picker
         isVisible={isVisible}
-        listData={custmerData}
+        listData={building}
         onClose={() => setIsVisible(false)}
         onConfirm={(values: (string | number)[], list: PickerOption[]) =>
           setChooseValueCustmer(values, list)

@@ -1,4 +1,4 @@
-import Taro from '@tarojs/taro';
+import Taro, { useDidShow } from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 import { View } from '@tarojs/components';
 import {
@@ -8,9 +8,12 @@ import {
   Dialog,
 } from '@nutui/nutui-react-taro';
 import { Res, getAddressList, delAddress } from '@/api';
+import { TopBarPage, MessageFuncProps } from '@/components';
 import './index.less';
 
-interface CustomerAddressProps {}
+interface CustomerAddressProps {
+  message: MessageFuncProps;
+}
 
 interface AddressModel {
   id: number;
@@ -19,16 +22,16 @@ interface AddressModel {
   receiver: string;
 }
 
-const Index = (_props: CustomerAddressProps) => {
+const AddressPage = (props: CustomerAddressProps) => {
+  const { message } = props;
+
   useEffect(() => {
-    getAddressList().then((res) => {
-      Res(res, {
-        OK: () => {
-          setAddress(res.data.address);
-        },
-      });
-    });
+    updateAddress();
   }, []);
+
+  useDidShow(() => {
+    updateAddress();
+  });
 
   const [address, setAddress] = useState([] as AddressModel[]);
 
@@ -36,17 +39,44 @@ const Index = (_props: CustomerAddressProps) => {
   const [delKey, setDelKey] = useState(0);
   const [visible, setVisible] = useState(false);
 
+  const updateAddress = () => {
+    getAddressList().then((res) => {
+      Res(res, {
+        OK: () => {
+          setAddress(res.data.address);
+        },
+      });
+    });
+  };
+
   const handleAddressDelete = (id: number) => {
     delAddress(id).then((res) => {
       Res(res, {
-        OK:() => {
-          setAddress(address.filter((i) => (i.id != id)))
-          setActiveKey('0')
-          setDelKey(0)
-        }
-      })
+        OK: () => {
+          setAddress(address.filter((i) => i.id != id));
+          setActiveKey('0');
+          setDelKey(0);
+          message.success('删除成功');
+        },
+      });
     });
   };
+
+  const deleteNode = (
+    <Dialog
+      cancelText='取消'
+      okText='确认'
+      title='请确认操作'
+      visible={visible}
+      onOk={() => {
+        setVisible(false);
+        handleAddressDelete(delKey);
+      }}
+      onCancel={() => setVisible(false)}
+    >
+      确认删除该地址么？
+    </Dialog>
+  );
 
   return (
     <View className='customer-address-page'>
@@ -58,19 +88,7 @@ const Index = (_props: CustomerAddressProps) => {
       >
         +
       </View>
-      <Dialog
-        cancelText='取消'
-        okText='确认'
-        title='请确认操作'
-        visible={visible}
-        onOk={() => {
-          setVisible(false);
-          handleAddressDelete(delKey);
-        }}
-        onCancel={() => setVisible(false)}
-      >
-        确认删除该地址么？
-      </Dialog>
+      {deleteNode}
       <Collapse
         className='customer-address-list'
         activeName={activeKey}
@@ -103,7 +121,7 @@ const Index = (_props: CustomerAddressProps) => {
               <Button
                 className='customer-address-listitem-button-ref'
                 onClick={() => {
-                  setDelKey(i.id)
+                  setDelKey(i.id);
                   setVisible(true);
                 }}
               >
@@ -114,6 +132,14 @@ const Index = (_props: CustomerAddressProps) => {
         ))}
       </Collapse>
     </View>
+  );
+};
+
+const Index = () => {
+  return (
+    <TopBarPage title='我的地址'>
+      <AddressPage message={{} as any} />
+    </TopBarPage>
   );
 };
 

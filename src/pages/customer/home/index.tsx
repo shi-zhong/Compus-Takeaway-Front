@@ -35,7 +35,7 @@ const Index = () => {
       tabitem: <CustomerSetting />,
     },
   ];
-  return <BottomNavbarWithTabPage tabs={tabs} defaultKey='/setting' />;
+  return <BottomNavbarWithTabPage tabs={tabs} defaultKey='/home' />;
 };
 
 export default Index;

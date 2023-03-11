@@ -34,13 +34,22 @@ const Index = (props: ShopLeftTagsBarProps) => {
           })}
         ></View>
       </View>
+      <View
+        className={Style(['tag'])}
+        onClick={() => {
+          setIndex(0);
+          props.setActive(0);
+        }}
+      >
+        <Text className={Style(['tag-text'])}>全部</Text>
+      </View>
       {props.tags.map((i, activeIndex) => {
         return (
           <View
             key={i.id + i.tag + activeIndex}
             className={Style(['tag'])}
             onClick={() => {
-              setIndex(activeIndex);
+              setIndex(activeIndex+1);
               props.setActive(i.id);
             }}
           >

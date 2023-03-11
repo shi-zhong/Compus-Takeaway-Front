@@ -2,11 +2,20 @@ import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 import { View, Button, Text } from '@tarojs/components';
 import { Input, TextArea, Picker, Dialog } from '@nutui/nutui-react-taro';
-import { Res, tagAll, commodityAdd, commodityDetail, commodityUpt } from '@/api';
+import { MessageFuncProps, TopBarPage, Upload } from '@/components';
+import {
+  Res,
+  tagAll,
+  commodityAdd,
+  commodityDetail,
+  commodityUpt,
+} from '@/api';
 
 import './index.less';
 
-interface CustomerAddressAdderProps {}
+interface ShopkeeperCommodityPageProps {
+  message: MessageFuncProps;
+}
 
 const Tag = (props: { tag: string; onClick: () => void }) => {
   return (
@@ -16,7 +25,7 @@ const Tag = (props: { tag: string; onClick: () => void }) => {
   );
 };
 
-const Index = (_props: CustomerAddressAdderProps) => {
+const ShopkeeperCommodityPage = (_props: ShopkeeperCommodityPageProps) => {
   const [id, setId] = useState(0);
   const [name, setName] = useState('');
   const [price, setPrice] = useState('0');
@@ -79,7 +88,7 @@ const Index = (_props: CustomerAddressAdderProps) => {
     if (id != 0) {
       handleUpdate();
     } else {
-      handleAdd()
+      handleAdd();
     }
   };
 
@@ -88,31 +97,33 @@ const Index = (_props: CustomerAddressAdderProps) => {
       id,
       intro,
       name,
-      picture: 'http://img.coozhi.com/upload/image/201905/10172856-57547.jpg',
+      picture: avatar,
       price: parseFloat(price),
       tags: JSON.stringify(select.map((i) => i.value)),
     }).then((res) => {
       Res(res, {
         OK: () => {
-          alert('success');
-          Taro.navigateBack({ delta: 1 });
+          _props.message.success('修改成功', () => {
+            Taro.navigateBack({ delta: 1 });
+          });
         },
       });
     });
-  }
+  };
 
   const handleAdd = () => {
     commodityAdd({
       intro,
       name,
-      picture: 'http://img.coozhi.com/upload/image/201905/10172856-57547.jpg',
+      picture: avatar,
       price: parseFloat(price),
       tags: JSON.stringify(select.map((i) => i.value)),
     }).then((res) => {
       Res(res, {
         OK: () => {
-          alert('success');
-          Taro.navigateBack({ delta: 1 });
+          _props.message.success('添加成功', () => {
+            Taro.navigateBack({ delta: 1 });
+          });
         },
       });
     });
@@ -166,6 +177,18 @@ const Index = (_props: CustomerAddressAdderProps) => {
           defaultValue={name}
           onChange={(v) => setName(v)}
         />
+
+        <View className='commodity-form-card'>
+          <View className='commodity-form-card-title'>
+            商品图片
+            <Upload
+              url={avatar}
+              callback={(i) => {
+                setAvatar(i);
+              }}
+            />
+          </View>
+        </View>
 
         <Input
           className='inputs'
@@ -225,5 +248,13 @@ const Index = (_props: CustomerAddressAdderProps) => {
   );
 };
 
-export { Index as CustomerAddressAdder, CustomerAddressAdderProps };
+const Index = () => {
+  return (
+    <TopBarPage title='商品信息'>
+      <ShopkeeperCommodityPage message={{} as any} />
+    </TopBarPage>
+  );
+};
+
+export { ShopkeeperCommodityPageProps };
 export default Index;

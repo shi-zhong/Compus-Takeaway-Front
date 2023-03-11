@@ -6,7 +6,8 @@ import { ClassNameFactory } from '@/common/className';
 import './index.less';
 
 interface HeaderProps {
-  handleSearch: (key:string) => void
+  syncSearchKey: (key: string) => void;
+  handleSearch: (key: string) => void;
 }
 
 const prefix = 'customer-header-';
@@ -24,6 +25,7 @@ const Index = (props: HeaderProps) => {
           placeholder='看看有啥美食？'
           onChange={(val) => {
             setInputvalue(val);
+            props.syncSearchKey(val)
           }}
         />
 

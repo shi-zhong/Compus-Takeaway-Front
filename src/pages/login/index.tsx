@@ -1,6 +1,6 @@
 import Taro from '@tarojs/taro';
 import { View, Button } from '@tarojs/components';
-import { Res, customerLogin } from '@/api';
+import { Res, login } from '@/api';
 
 import './index.less';
 
@@ -8,7 +8,7 @@ interface LoginProps {}
 
 const Index = (_props: LoginProps) => {
   const handleLogin = () => {
-    customerLogin().then((res) => {
+    login().then((res) => {
       Res(res, {
         OK: () => {
           Taro.setStorage({

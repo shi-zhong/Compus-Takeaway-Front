@@ -64,11 +64,12 @@ const Index = (props: ShopRightCommodityBarProps) => {
   const [select, setSelect] = useState({} as any);
 
   const [commoditys, setCommoditys] = useState([] as any[]);
+  const [updateComponent, setUpdateComponent] = useState(1);
 
   useEffect(() => {
     const id = Taro.getStorageSync('shop_id');
     commodityGetAll(id);
-  }, [props.spread]);
+  }, [props.spread, updateComponent]);
 
   const commodityGetAll = (id: number) => {
     commodityAll(id).then((res) => {
@@ -89,6 +90,10 @@ const Index = (props: ShopRightCommodityBarProps) => {
     });
   };
 
+  const update = () => {
+    setUpdateComponent(updateComponent + 1);
+  };
+
   const getActiveTagCommodity = () => {
     if (props.active == -1) return commoditys;
     else return commoditys.filter((i) => i.tags.indexOf(props.active) != -1);
@@ -103,8 +108,12 @@ const Index = (props: ShopRightCommodityBarProps) => {
           commodityDel(select.id).then((res) => {
             Res(res, {
               OK: () => {
-                alert('success');
+                Taro.showToast({
+                  icon: 'success',
+                  title: '删除成功',
+                });
                 setVisible(false);
+                update();
               },
             });
           });

@@ -3,3 +3,111 @@
     height: calc(100vh - 5rem);
   }
 }
+
+.customer-order {
+  & .nut-tabpane {
+    background-color: whitesmoke;
+  }
+}
+
+.orderbar {
+  &- {
+    width: calc(90vw);
+    margin: 20px auto;
+    height: 9rem;
+    overflow: hidden;
+    vertical-align: top;
+    border-radius: 25px;
+    padding: 25px;
+    box-sizing: border-box;
+    background: white;
+    box-shadow: 0px 1px 7px 0px rgb(237, 238, 241);
+    // border: 1px solid black;
+  }
+
+  &-blank {
+    text-align: center;
+    font-size: 0.8rem;
+    color:gray;
+    margin: 30vh 0;
+  }
+
+  &-shop {
+    &-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    &-name {
+      width: calc(90vw - 4rem);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    &-picture {
+      width: 3rem;
+    }
+  }
+  &-commodity {
+    &-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    &-picture {
+      width: 2.8rem;
+      // height: 2.8rem;
+      margin: 0.1rem;
+    }
+    &-mask-con {
+      position: relative;
+      display: inline-block;
+      width: 3rem;
+    }
+
+    &-mask {
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      width: 3rem;
+      height: 3rem;
+      border-radius: 0.5rem;
+
+      background-color: rgba(0, 0, 0, 0.5);
+      line-height: 3rem;
+      color: white;
+      text-align: center;
+    }
+
+    &-list {
+      width: calc(90vw - 3rem);
+    }
+
+    &-name {
+      width: calc(90vw - 6rem);
+      padding-left: 0.5rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &-count {
+      width: 3rem;
+      font-size: 0.6rem;
+      color: gray;
+    }
+  }
+
+  &-order {
+    &-info {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem;
+      font-size: 0.8rem;
+    }
+    &-status {
+      color: gray;
+    }
+  }
+}

@@ -1,14 +1,14 @@
 .customer-address {
   &-page {
-    height: 100vh;
-    overflow: hidden;
+    height: calc(100vh - 2.5rem);
+    overflow: auto;
     background: whitesmoke;
     & .nut-collapse-item__title {
       display: block;
       width: 75%;
       overflow: hidden;
       white-space: nowrap;
-      text-overflow: ellipsis;
+      text-overflow: ellipsis; 
     }
 
     & .nut-button--primary.nut-dialog__footer-ok {
@@ -23,6 +23,7 @@
 
   &-float-adder {
     position: fixed;
+    z-index: 999;
     bottom: 3rem;
     right: 2rem;
 

@@ -3,9 +3,9 @@ import { useState } from 'react';
 import Shop from './subpage/shop/index';
 import Order from './subpage/order/index';
 
-interface ShppStatePageProps {}
+interface ShopStatePageProps {}
 
-const Index = (props: ShppStatePageProps) => {
+const Index = (_props: ShopStatePageProps) => {
   const [page, setPage] = useState('shop');
 
   const [commodity, setCommodity] = useState([]);
@@ -14,17 +14,17 @@ const Index = (props: ShppStatePageProps) => {
     <>
       {page == 'shop' && (
         <Shop
+          commodity={commodity}
           syncCommodity={(i: any) => {
             setCommodity(i);
             setPage('order');
           }}
         />
       )}
-      {page == 'order' && <Order commodity={commodity} />}
-      {/* {page == 'shop' && <Shop />} */}
+      {page == 'order' && <Order commodity={commodity} onBack={() => {setPage('shop')}} />}
     </>
   );
 };
 
-export { Index as ShppStatePage, ShppStatePageProps };
+export { Index as ShppStatePage, ShopStatePageProps };
 export default Index;
